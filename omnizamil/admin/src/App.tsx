@@ -55,18 +55,22 @@ function emptyMaintenanceFor(product: AdminProduct): MaintenanceConfig {
     message:
       product === 'omnigrab'
         ? 'OmniGrab is under maintenance. Please try again later.'
-        : 'Omni-Removal is under maintenance. Please try again later.',
+        : product === 'shiftvoice'
+          ? 'ShiftVoice is under maintenance. Please try again later.'
+          : 'Omni-Removal is under maintenance. Please try again later.',
     affectAllDevices: true,
     allowedHwids: [],
     lockEngine: true,
     updatedAt: '—',
     forceUpdate: false,
-    latestVersion: '1.0.0',
+    latestVersion: product === 'shiftvoice' ? '1.6.0' : '1.0.0',
     updateUrl: '',
     updateMessage:
       product === 'omnigrab'
         ? 'A new OmniGrab / ShiftGrab update is available. Download and install it to continue.'
-        : 'A new Omni-Removal update is available. Download and install it to continue.',
+        : product === 'shiftvoice'
+          ? 'A new ShiftVoice update is available. Download and install it to continue.'
+          : 'A new Omni-Removal update is available. Download and install it to continue.',
     durationMinutes: 0,
     startedAt: null,
   };
@@ -142,7 +146,9 @@ export const App: React.FC = () => {
       setSyncError(
         err instanceof Error
           ? err.message
-          : 'Could not load Supabase. Run supabase/schema.sql (+ schema-delta.sql) first.',
+          : product === 'shiftvoice'
+            ? 'Could not load ShiftVoice tables. Run supabase/schema-shiftvoice.sql in Supabase SQL Editor.'
+            : 'Could not load Supabase. Run supabase/schema.sql (+ schema-delta.sql) first.',
       );
     } finally {
       setLoading(false);

@@ -1,11 +1,6 @@
-﻿.env
-.env.*
-!.env.example
+.env
+work/previews/
 __pycache__/
 *.pyc
 .venv/
 venv/
-work/previews/
-*.mp3
-*.wav
-*.ogg

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { MaintenanceConfig } from '../types';
 import type { AdminProduct } from '../lib/product';
+import { productLabel } from '../lib/product';
 
 interface SidebarProps {
   activeTab: string;
@@ -40,7 +41,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'users', label: 'Users', icon: Users },
     {
       id: 'media',
-      label: product === 'omnigrab' ? 'Downloads & platforms' : 'Media & countries',
+      label:
+        product === 'omnigrab'
+          ? 'Downloads & platforms'
+          : product === 'shiftvoice'
+            ? 'Voice & countries'
+            : 'Media & countries',
       icon: BarChart3,
     },
     { id: 'live', label: 'Live analytics', icon: Activity },
@@ -52,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'maintenance', label: 'Maintenance & updates', icon: ShieldAlert },
   ];
 
-  const brandTitle = product === 'omnigrab' ? 'OmniGrab' : 'Omni-Removal';
+  const brandTitle = productLabel(product);
 
   return (
     <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
@@ -81,6 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           <option value="omni">Omni Removal</option>
           <option value="omnigrab">OmniGrab</option>
+          <option value="shiftvoice">ShiftVoice</option>
         </select>
       </label>
 

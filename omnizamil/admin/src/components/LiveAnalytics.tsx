@@ -20,6 +20,7 @@ export const LiveAnalytics: React.FC<{ devices: DeviceInfo[]; product?: AdminPro
   product = 'omni',
 }) => {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const [q, setQ] = useState('');
 
   const list = useMemo(() => {
@@ -59,24 +60,24 @@ export const LiveAnalytics: React.FC<{ devices: DeviceInfo[]; product?: AdminPro
       <div className="stat-grid">
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Total downloads' : 'Images processed'}</span>
+            <span>{isGrab ? 'Total downloads' : isVoice ? 'Characters' : 'Images processed'}</span>
           </div>
           <div className="stat-value">{totals.images}</div>
           <div className="stat-footer">Across {list.length} device(s)</div>
         </div>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Videos downloaded' : 'Videos processed'}</span>
+            <span>{isGrab ? 'Videos downloaded' : isVoice ? 'Exports' : 'Videos processed'}</span>
           </div>
           <div className="stat-value">{totals.videos}</div>
-          <div className="stat-footer">{isGrab ? 'Successful downloads' : 'Successful cleans'}</div>
+          <div className="stat-footer">{isGrab ? 'Successful downloads' : isVoice ? 'Successful exports' : 'Successful cleans'}</div>
         </div>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Failed downloads' : 'Failed jobs'}</span>
+            <span>{isGrab ? 'Failed downloads' : isVoice ? 'Failed jobs' : 'Failed jobs'}</span>
           </div>
           <div className="stat-value">{totals.fails}</div>
-          <div className="stat-footer">{isGrab ? 'Errors during download' : 'Errors during clean'}</div>
+          <div className="stat-footer">{isGrab ? 'Errors during download' : isVoice ? 'Errors during TTS' : 'Errors during clean'}</div>
         </div>
         <div className="stat-tile">
           <div className="stat-top">
@@ -108,7 +109,7 @@ export const LiveAnalytics: React.FC<{ devices: DeviceInfo[]; product?: AdminPro
                   <th className="lt-user">User</th>
                   <th className="lt-hwid">Device ID</th>
                   <th className="lt-status">Status</th>
-                  <th className="lt-num">{isGrab ? 'DL' : 'Img'}</th>
+                  <th className="lt-num">{isGrab ? 'DL' : isVoice ? 'Chars' : 'Img'}</th>
                   <th className="lt-num">Vid</th>
                   <th className="lt-num">Fail</th>
                   <th className="lt-time">Process</th>

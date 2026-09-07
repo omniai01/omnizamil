@@ -5,6 +5,7 @@ import type { AdminProduct } from '../lib/product';
 
 function exportDevicesExcel(rows: DeviceInfo[], product: AdminProduct = 'omni') {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const header = [
     'User',
     'Hardware ID',
@@ -13,8 +14,8 @@ function exportDevicesExcel(rows: DeviceInfo[], product: AdminProduct = 'omni') 
     'Country',
     'CPU',
     'GPU',
-    isGrab ? 'Downloads' : 'Images',
-    'Videos',
+    isGrab ? 'Downloads' : isVoice ? 'Chars' : 'Images',
+    isVoice ? 'Exports' : 'Videos',
     'Fails',
     'Process ms',
     ...(isGrab ? ['YouTube linked'] : []),
@@ -49,7 +50,7 @@ function exportDevicesExcel(rows: DeviceInfo[], product: AdminProduct = 'omni') 
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${isGrab ? 'omnigrab' : 'omni'}-devices-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `${isGrab ? 'omnigrab' : isVoice ? 'shiftvoice' : 'omni'}-devices-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -134,7 +135,8 @@ export const DeviceMonitor: React.FC<{
     setBusy(true);
     setCheckMsg('');
     try {
-      const appName = product === 'omnigrab' ? 'OmniGrab' : 'Omni-Removal';
+      const appName =
+        product === 'omnigrab' ? 'OmniGrab' : product === 'shiftvoice' ? 'ShiftVoice' : 'Omni-Removal';
       for (const d of targets) {
         await sendNotification(product, {
           title: `Please open ${appName}`,
@@ -161,7 +163,8 @@ export const DeviceMonitor: React.FC<{
   };
 
   const isGrab = product === 'omnigrab';
-  const appLabel = isGrab ? 'OmniGrab' : 'Omni-Removal';
+  const isVoice = product === 'shiftvoice';
+  const appLabel = isGrab ? 'OmniGrab' : isVoice ? 'ShiftVoice' : 'Omni-Removal';
 
   const checkLabel = (d: DeviceInfo) => {
     const c = checks[d.hwid];
@@ -278,7 +281,9 @@ export const DeviceMonitor: React.FC<{
                     <td className="col-media">
                       {isGrab
                         ? `${d.imageCount} DL · ${d.videoCount} vid`
-                        : `${d.imageCount} img · ${d.videoCount} vid`}
+                        : isVoice
+                          ? `${d.imageCount} chars · ${d.videoCount} exp`
+                          : `${d.imageCount} img · ${d.videoCount} vid`}
                     </td>
                     <td className="col-time">{d.firstSeen}</td>
                     <td className="col-time">{d.lastPing}</td>

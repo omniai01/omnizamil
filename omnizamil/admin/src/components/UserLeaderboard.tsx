@@ -8,6 +8,7 @@ export const UserLeaderboard: React.FC<{ users: UserMetric[]; product?: AdminPro
   product = 'omni',
 }) => {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const sorted = [...users].sort(
     (a, b) =>
       b.totalImagesCleaned + b.totalVideosProcessed - (a.totalImagesCleaned + a.totalVideosProcessed),
@@ -32,7 +33,7 @@ export const UserLeaderboard: React.FC<{ users: UserMetric[]; product?: AdminPro
                 <th>Hardware ID</th>
                 <th>Country</th>
                 <th>Joined</th>
-                <th>{isGrab ? 'Downloads' : 'Images'}</th>
+                <th>{isGrab ? 'Downloads' : isVoice ? 'Chars' : 'Images'}</th>
                 <th>Videos</th>
               </tr>
             </thead>

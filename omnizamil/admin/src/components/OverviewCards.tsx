@@ -9,6 +9,7 @@ export const OverviewCards: React.FC<{
   devices?: DeviceInfo[];
 }> = ({ metrics, product = 'omni', devices = [] }) => {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const imagePercent = Math.min(
     100,
     Math.round((metrics.totalImagesCleaned / Math.max(1, metrics.targetImageGoal)) * 100),
@@ -60,7 +61,7 @@ export const OverviewCards: React.FC<{
         </div>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Total downloads' : 'Images cleaned'}</span>
+            <span>{isGrab ? 'Total downloads' : isVoice ? 'Characters generated' : 'Images cleaned'}</span>
             <Image size={18} color="var(--accent)" />
           </div>
           <div className="stat-value">{metrics.totalImagesCleaned}</div>
@@ -68,7 +69,7 @@ export const OverviewCards: React.FC<{
         </div>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Videos downloaded' : 'Videos cleaned'}</span>
+            <span>{isGrab ? 'Videos downloaded' : isVoice ? 'Exports' : 'Videos cleaned'}</span>
             <Video size={18} color="var(--accent)" />
           </div>
           <div className="stat-value">{metrics.totalVideosCleaned}</div>
@@ -115,7 +116,7 @@ export const OverviewCards: React.FC<{
         <div style={{ display: 'grid', gap: 14 }}>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 6 }}>
-              <span>{isGrab ? 'Download progress' : 'Image progress'}</span>
+              <span>{isGrab ? 'Download progress' : isVoice ? 'Character progress' : 'Image progress'}</span>
               <strong>
                 {metrics.totalImagesCleaned.toLocaleString()} /{' '}
                 {metrics.targetImageGoal.toLocaleString()} ({imagePercent}%)
@@ -127,7 +128,7 @@ export const OverviewCards: React.FC<{
           </div>
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 6 }}>
-              <span>Video progress</span>
+              <span>{isVoice ? 'Export progress' : 'Video progress'}</span>
               <strong>
                 {metrics.totalVideosCleaned.toLocaleString()} /{' '}
                 {metrics.targetVideoGoal.toLocaleString()} ({videoPercent}%)

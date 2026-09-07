@@ -74,10 +74,11 @@ export const MediaAnalytics: React.FC<{
   platforms?: PlatformStat[];
 }> = ({ metrics, countries, product = 'omni', platforms }) => {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const peak = Math.max(1, ...countries.map((c) => c.images + c.videos));
   const platformRows = useMemo(
-    () => (isGrab ? mergePlatforms(platforms) : []),
-    [isGrab, platforms],
+    () => (isGrab || isVoice ? mergePlatforms(platforms) : []),
+    [isGrab, isVoice, platforms],
   );
 
   return (
@@ -85,29 +86,29 @@ export const MediaAnalytics: React.FC<{
       <div className="stat-grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Total downloads' : 'Total images cleaned'}</span>
+            <span>{isGrab ? 'Total downloads' : isVoice ? 'Characters generated' : 'Total images cleaned'}</span>
           </div>
           <div className="stat-value">{metrics.totalImagesCleaned}</div>
         </div>
         <div className="stat-tile">
           <div className="stat-top">
-            <span>{isGrab ? 'Videos downloaded' : 'Total videos cleaned'}</span>
+            <span>{isGrab ? 'Videos downloaded' : isVoice ? 'Exports' : 'Total videos cleaned'}</span>
           </div>
           <div className="stat-value">{metrics.totalVideosCleaned}</div>
         </div>
       </div>
 
-      {isGrab && (
+      {(isGrab || isVoice) && (
         <div className="panel-card">
           <div className="card-header-clean">
-            <h2>Downloads by platform</h2>
+            <h2>{isVoice ? 'Jobs by kind' : 'Downloads by platform'}</h2>
           </div>
           {platformRows.map((p) => (
             <div key={p.platform} className="country-row">
               <div>
                 <strong>{p.platform}</strong>
                 <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>
-                  {p.downloads} downloads · {p.fails} fails
+                  {p.downloads} {isVoice ? 'ok' : 'downloads'} · {p.fails} fails
                 </div>
               </div>
               <strong>{p.downloads}</strong>
@@ -133,7 +134,8 @@ export const MediaAnalytics: React.FC<{
                     {c.country} {c.countryCode ? `(${c.countryCode})` : ''}
                   </strong>
                   <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>
-                    {c.devices} devices · {c.images} {isGrab ? 'downloads' : 'images'} ·{' '}
+                    {c.devices} devices · {c.images}{' '}
+                    {isGrab ? 'downloads' : isVoice ? 'chars' : 'images'} ·{' '}
                     {c.videos} videos
                   </div>
                   <div className="progress-track" style={{ marginTop: 6 }}>

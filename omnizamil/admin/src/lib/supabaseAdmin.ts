@@ -43,13 +43,17 @@ function deriveStatus(status: string, lastPing: string): 'active' | 'choked' | '
 function defaultMaintenanceMessage(product: AdminProduct): string {
   return product === 'omnigrab'
     ? 'OmniGrab is under maintenance. Please try again later.'
-    : 'Omni-Removal is under maintenance. Please try again later.';
+    : product === 'shiftvoice'
+      ? 'ShiftVoice is under maintenance. Please try again later.'
+      : 'Omni-Removal is under maintenance. Please try again later.';
 }
 
 function defaultUpdateMessage(product: AdminProduct): string {
   return product === 'omnigrab'
     ? 'A new OmniGrab / ShiftGrab update is available. Download and install it to continue.'
-    : 'A new Omni-Removal update is available. Download and install it to continue.';
+    : product === 'shiftvoice'
+      ? 'A new ShiftVoice update is available. Download and install it to continue.'
+      : 'A new Omni-Removal update is available. Download and install it to continue.';
 }
 
 type DeviceRow = {

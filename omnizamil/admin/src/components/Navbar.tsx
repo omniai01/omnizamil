@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, RefreshCw, Activity, ShieldCheck, ShieldAlert } from 'lucide-react';
 import type { MaintenanceConfig, SystemMetrics } from '../types';
 import type { AdminProduct } from '../lib/product';
+import { productLabel } from '../lib/product';
 
 interface NavbarProps {
   setMobileOpen: (open: boolean) => void;
@@ -21,11 +22,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   product = 'omni',
 }) => {
   const isGrab = product === 'omnigrab';
+  const isVoice = product === 'shiftvoice';
   const titles: Record<string, string> = {
     overview: 'Overview',
     devices: 'Devices',
     users: 'Users',
-    media: isGrab ? 'Downloads & platforms' : 'Media & countries',
+    media: isGrab ? 'Downloads & platforms' : isVoice ? 'Voice & countries' : 'Media & countries',
     live: 'Live analytics',
     analytics: 'Website analytics',
     errors: 'Errors',
@@ -42,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <div className="page-title-group">
           <h1>{titles[activeTab] || 'Admin'}</h1>
-          <p>{isGrab ? 'Live OmniGrab telemetry' : 'Live Omni-Removal telemetry'}</p>
+          <p>Live {productLabel(product)} telemetry</p>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import asyncio
 import base64
 import json
 import os
+import platform
 import re
 import sys
 import threading
@@ -96,6 +97,15 @@ def _append_admin_error(source: str, raw: object, user_message: str = "") -> Non
         }
         items.insert(0, entry)
         _save_json(ADMIN_ERRORS, items[:300])
+        try:
+            supabase_sync.report_error(
+                user_message or str(raw)[:500],
+                error_type=str(source or "ENGINE")[:40],
+                severity="warning",
+                stack_trace=str(raw)[:4000],
+            )
+        except Exception:
+            pass
     except Exception:
         pass
 
@@ -394,6 +404,55 @@ class Api:
                 changed = True
         if changed:
             self._persist_jobs()
+        self._cloud_maintenance = False
+        self._cloud_maintenance_message = ""
+        self._boot_cloud()
+
+    def _boot_cloud(self) -> None:
+        """Register with Omni admin cloud (sv_*). Never breaks local app if offline."""
+
+        def _run() -> None:
+            try:
+                if not supabase_sync.is_configured():
+                    return
+                name = platform.node() or "ShiftVoice"
+                supabase_sync.register_device(display_name=name, app_version=APP_VERSION)
+                supabase_sync.start_heartbeat_loop(60, display_name=name)
+                self._refresh_cloud_settings()
+            except Exception:
+                pass
+
+        threading.Thread(target=_run, name="sv-cloud-boot", daemon=True).start()
+
+    def _refresh_cloud_settings(self) -> None:
+        try:
+            res = supabase_sync.fetch_app_settings()
+            settings = (res or {}).get("settings") if isinstance(res, dict) else None
+            if not isinstance(settings, dict):
+                return
+            enabled = bool(settings.get("maintenance_enabled"))
+            affect_all = settings.get("affect_all_devices", True)
+            allowed = settings.get("allowed_hwids") or []
+            hwid = supabase_sync.device_hwid()
+            if enabled and (affect_all or hwid in (allowed or [])):
+                self._cloud_maintenance = True
+                self._cloud_maintenance_message = str(
+                    settings.get("maintenance_message")
+                    or "ShiftVoice is under maintenance. Please try again later."
+                )
+            else:
+                self._cloud_maintenance = False
+                self._cloud_maintenance_message = ""
+        except Exception:
+            pass
+
+    def _is_maintenance(self) -> bool:
+        return bool(self.maintenance_mode or self._cloud_maintenance)
+
+    def _maintenance_message(self) -> str:
+        if self._cloud_maintenance and self._cloud_maintenance_message:
+            return self._cloud_maintenance_message
+        return "ShiftVoice is in maintenance. Please try again soon."
 
     def _persist_jobs(self) -> None:
         _save_json(JOBS_INDEX, self._jobs[:300])
@@ -436,6 +495,21 @@ class Api:
                 "created_at": event["created_at"],
             },
         )
+        try:
+            supabase_sync.bump_tts(
+                chars=int(event["chars"] or 0),
+                exports=int(event["exports"] or 0),
+                success=True,
+                display_name=platform.node() or "ShiftVoice",
+                kind=str(kind or "tts"),
+                meta={
+                    "job_id": event["job_id"],
+                    "title": event["title"],
+                    **(event["meta"] if isinstance(event["meta"], dict) else {}),
+                },
+            )
+        except Exception:
+            pass
 
     def _upsert_job(self, job: dict) -> dict:
         with self._job_lock:
@@ -545,10 +619,10 @@ class Api:
         }
 
     def enqueue_batch(self, payload: dict) -> dict:
-        if self.maintenance_mode:
+        if self._is_maintenance():
             return {
                 "ok": False,
-                "message": "ShiftVoice is in maintenance. Please try again soon.",
+                "message": self._maintenance_message(),
                 "maintenance": True,
             }
         if isinstance(payload, str):
@@ -749,11 +823,17 @@ class Api:
             unread = sum(1 for i in items if not i.get("read"))
         except Exception:
             unread = 0
+        try:
+            self._refresh_cloud_settings()
+        except Exception:
+            pass
         return {
             "ok": True,
-            "maintenanceMode": self.maintenance_mode,
+            "maintenanceMode": self._is_maintenance(),
             "adminUnreadErrors": unread,
             "version": APP_VERSION,
+            "supabaseConfigured": supabase_sync.is_configured(),
+            "hwid": supabase_sync.device_hwid() if supabase_sync.is_configured() else "",
         }
 
     def admin_unlock(self, pin: str) -> dict:
@@ -1060,10 +1140,10 @@ class Api:
             return _public_fail("preview_voice", e, "Preview failed. Try again in a moment.")
 
     def generate_audio(self, payload: dict) -> dict:
-        if self.maintenance_mode:
+        if self._is_maintenance():
             return {
                 "ok": False,
-                "message": "ShiftVoice is in maintenance. Please try again soon.",
+                "message": self._maintenance_message(),
                 "maintenance": True,
             }
         if isinstance(payload, str):
@@ -1109,10 +1189,10 @@ class Api:
         return {"ok": True, "queued": True, "job": job}
 
     def generate_podcast(self, payload: dict) -> dict:
-        if self.maintenance_mode:
+        if self._is_maintenance():
             return {
                 "ok": False,
-                "message": "ShiftVoice is in maintenance. Please try again soon.",
+                "message": self._maintenance_message(),
                 "maintenance": True,
             }
         if isinstance(payload, str):
