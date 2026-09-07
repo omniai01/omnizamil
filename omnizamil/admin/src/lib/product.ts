@@ -9,6 +9,9 @@ export type ProductTables = {
   metricsRpc: string
   countryRpc: string
   platformRpc?: string
+  voiceRpc?: string
+  todayRpc?: string
+  jobsTable?: string
 }
 
 export function productFromHash(): AdminProduct {
@@ -53,6 +56,9 @@ export function tablesFor(p: AdminProduct): ProductTables {
       metricsRpc: 'sv_admin_device_metrics',
       countryRpc: 'sv_admin_country_rollup',
       platformRpc: 'sv_platform_rollup',
+      voiceRpc: 'sv_voice_rollup',
+      todayRpc: 'sv_today_process_ms',
+      jobsTable: 'shiftvoice_jobs',
     }
   }
   return {

@@ -8,3 +8,7 @@ alter table public.app_settings
 alter table public.og_app_settings
   add column if not exists maintenance_duration_minutes integer not null default 0,
   add column if not exists maintenance_started_at timestamptz null;
+
+alter table public.sv_app_settings
+  add column if not exists maintenance_duration_minutes integer not null default 0,
+  add column if not exists maintenance_started_at timestamptz null;

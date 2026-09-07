@@ -1,6 +1,11 @@
 .env
-work/previews/
+work/
 __pycache__/
 *.pyc
 .venv/
 venv/
+*.mp3
+bench_runs/
+.DS_Store
+*.ico
+scripts_probe_sv_admin.py

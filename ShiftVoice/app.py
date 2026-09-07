@@ -385,6 +385,7 @@ class Api:
         self.batches_count = int(saved.get("batchesCount") or 0)
         self.admin_pin = str(saved.get("adminPin") or ADMIN_PIN_DEFAULT)
         self.maintenance_mode = bool(saved.get("maintenanceMode") or False)
+        self._cloud_chars_aligned = bool(saved.get("cloudCharsAligned") or False)
         Path(self.output_dir).mkdir(parents=True, exist_ok=True)
         self._voices_cache: list | None = None
         lib = _load_json(LIBRARY, {"favorites": [], "pairs": []})
@@ -419,10 +420,52 @@ class Api:
                 supabase_sync.register_device(display_name=name, app_version=APP_VERSION)
                 supabase_sync.start_heartbeat_loop(60, display_name=name)
                 self._refresh_cloud_settings()
+                self._align_cloud_chars_once()
             except Exception:
                 pass
 
         threading.Thread(target=_run, name="sv-cloud-boot", daemon=True).start()
+
+    def _align_cloud_chars_once(self) -> None:
+        """One-shot: push local chars/exports if cloud still shows 0 for this device."""
+        try:
+            saved = _load_json(SETTINGS, {})
+            if saved.get("cloudCharsAligned"):
+                self._cloud_chars_aligned = True
+                return
+            if self.chars_generated <= 0 and self.exports_count <= 0:
+                return
+            hwid = supabase_sync.device_hwid()
+            existing = supabase_sync._request(
+                "GET",
+                "sv_devices",
+                prefer="return=representation",
+                params={"hwid": f"eq.{hwid}", "select": "image_count,video_count"},
+            )
+            rows = existing.get("data") if isinstance(existing, dict) else None
+            row = rows[0] if isinstance(rows, list) and rows else {}
+            cloud_chars = int((row or {}).get("image_count") or 0)
+            cloud_exports = int((row or {}).get("video_count") or 0)
+            if cloud_chars > 0 or cloud_exports > 0:
+                self._cloud_chars_aligned = True
+                self._persist_settings()
+                return
+            chars = max(0, int(self.chars_generated) - cloud_chars)
+            exports = max(0, int(self.exports_count) - cloud_exports)
+            if chars <= 0 and exports <= 0:
+                return
+            supabase_sync.bump_tts(
+                chars=chars,
+                exports=exports,
+                success=True,
+                display_name=platform.node() or "ShiftVoice",
+                kind="align",
+                meta={"source": "local_settings_align"},
+            )
+            self._cloud_chars_aligned = True
+            self._persist_settings()
+        except Exception:
+            pass
 
     def _refresh_cloud_settings(self) -> None:
         try:
@@ -469,12 +512,20 @@ class Api:
         except Exception:
             pass
 
-    def _log_usage_event(self, kind: str, chars: int = 0, job_id: str = "", title: str = "", meta: dict | None = None) -> None:
+    def _log_usage_event(
+        self,
+        kind: str,
+        chars: int = 0,
+        job_id: str = "",
+        title: str = "",
+        meta: dict | None = None,
+        elapsed_ms: int = 0,
+    ) -> None:
         event = {
             "id": uuid.uuid4().hex[:12],
             "kind": kind,
             "chars": int(chars or 0),
-            "exports": 1 if kind in ("studio", "podcast", "export") else 0,
+            "exports": 1 if kind in ("studio", "podcast", "export", "silence", "batch") else 0,
             "job_id": job_id or "",
             "title": (title or "")[:120],
             "meta": meta or {},
@@ -500,6 +551,7 @@ class Api:
                 chars=int(event["chars"] or 0),
                 exports=int(event["exports"] or 0),
                 success=True,
+                elapsed_ms=int(elapsed_ms or 0),
                 display_name=platform.node() or "ShiftVoice",
                 kind=str(kind or "tts"),
                 meta={
@@ -511,11 +563,31 @@ class Api:
         except Exception:
             pass
 
+    def _push_job_cloud(self, job: dict) -> None:
+        try:
+            self._push_supabase(
+                "shiftvoice_jobs",
+                {
+                    "id": job.get("id") or "",
+                    "kind": job.get("kind") or "studio",
+                    "status": job.get("status") or "",
+                    "title": (job.get("title") or "")[:120],
+                    "chars": int(job.get("chars") or 0),
+                    "path": job.get("path") or "",
+                    "created_at": job.get("createdAt"),
+                    "updated_at": job.get("updatedAt") or _utc_now(),
+                },
+            )
+        except Exception:
+            pass
+
     def _upsert_job(self, job: dict) -> dict:
         with self._job_lock:
             found = False
+            prev_status = None
             for i, existing in enumerate(self._jobs):
                 if existing.get("id") == job.get("id"):
+                    prev_status = existing.get("status")
                     self._jobs[i] = job
                     found = True
                     break
@@ -531,6 +603,13 @@ class Api:
                 "jobId": job.get("id"),
             }
         )
+        status = job.get("status")
+        progress = float(job.get("progress") or 0)
+        should_push = status in ("queued", "done", "failed") or (
+            status == "running" and (prev_status != "running" or progress <= 0.08)
+        )
+        if should_push and job.get("id"):
+            self._push_job_cloud(job)
         return job
 
     def list_jobs(self, query: str = "") -> dict:
@@ -712,6 +791,7 @@ class Api:
         return {"ok": True, "batch": batch, "jobs": jobs, "errors": errors, "count": len(jobs)}
 
     def _persist_settings(self) -> None:
+        saved = _load_json(SETTINGS, {})
         _save_json(
             SETTINGS,
             {
@@ -721,17 +801,48 @@ class Api:
                 "batchesCount": self.batches_count,
                 "adminPin": self.admin_pin,
                 "maintenanceMode": self.maintenance_mode,
+                "cloudCharsAligned": bool(
+                    getattr(self, "_cloud_chars_aligned", False)
+                    or saved.get("cloudCharsAligned")
+                ),
             },
         )
 
     def _persist_library(self) -> None:
         _save_json(LIBRARY, {"favorites": self.favorites, "pairs": self.pairs})
 
-    def _track_usage(self, text: str, kind: str = "export", job_id: str = "", title: str = "") -> None:
-        self.chars_generated += len(text or "")
-        self.exports_count += 1
+    def _track_usage(
+        self,
+        text: str,
+        kind: str = "export",
+        job_id: str = "",
+        title: str = "",
+        *,
+        voice: str = "",
+        voices: list | None = None,
+        elapsed_ms: int = 0,
+        meta: dict | None = None,
+        count_export: bool = True,
+        count_chars: bool = True,
+    ) -> None:
+        if count_chars:
+            self.chars_generated += len(text or "")
+        if count_export:
+            self.exports_count += 1
         self._persist_settings()
-        self._log_usage_event(kind, chars=len(text or ""), job_id=job_id, title=title)
+        extra = dict(meta or {})
+        if voice:
+            extra["voice"] = voice
+        if voices:
+            extra["voices"] = list(voices)[:12]
+        self._log_usage_event(
+            kind,
+            chars=len(text or "") if count_chars else 0,
+            job_id=job_id,
+            title=title,
+            meta=extra,
+            elapsed_ms=elapsed_ms,
+        )
 
     def check_internet(self) -> dict:
         try:
@@ -931,6 +1042,7 @@ class Api:
             return {"ok": False, "message": "File not found."}
         keep_sec = float(payload.get("keepSilence") or 0.05)
         keep_ms = int(max(0.0, keep_sec) * 1000)
+        started = time.time()
         try:
             out = _strip_silence_file(src, keep_ms=keep_ms)
             stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -948,6 +1060,17 @@ class Api:
             hist = _load_json(HISTORY, [])
             hist.insert(0, item)
             _save_json(HISTORY, hist[:200])
+            self._track_usage(
+                "",
+                kind="silence",
+                job_id=item["id"],
+                title=f"Silence · {src.name}",
+                voice="silence",
+                elapsed_ms=int(max(0.0, (time.time() - started) * 1000)),
+                meta={"source": src.name, "bytes": export.stat().st_size},
+                count_chars=False,
+                count_export=True,
+            )
             audio = _maybe_audio(export)
             return {
                 "ok": True,
@@ -1299,7 +1422,15 @@ class Api:
             stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             export = Path(self.output_dir) / f"shiftvoice_{stamp}_{job_id}.mp3"
             export.write_bytes(out.read_bytes())
-            self._track_usage(text, kind="studio", job_id=job_id, title=job.get("title") or "")
+            elapsed_ms = int(max(0.0, (time.time() - started) * 1000))
+            self._track_usage(
+                text,
+                kind="studio",
+                job_id=job_id,
+                title=job.get("title") or "",
+                voice=voice,
+                elapsed_ms=elapsed_ms,
+            )
             item = {
                 "id": job_id,
                 "title": (job.get("title") or text)[:80],
@@ -1327,19 +1458,6 @@ class Api:
                 }
             )
             self._upsert_job(done)
-            self._push_supabase(
-                "shiftvoice_jobs",
-                {
-                    "id": job_id,
-                    "kind": "studio",
-                    "status": "done",
-                    "title": done.get("title") or "",
-                    "chars": len(text),
-                    "path": str(export),
-                    "created_at": done.get("createdAt"),
-                    "updated_at": done.get("updatedAt"),
-                },
-            )
         except Exception as e:
             safe = _safe_user_message(e, "Generation failed. Please try again.")
             _append_admin_error("studio_job", e, safe)
@@ -1354,6 +1472,19 @@ class Api:
                 }
             )
             self._upsert_job(failed)
+            try:
+                supabase_sync.bump_tts(
+                    chars=0,
+                    exports=0,
+                    success=False,
+                    display_name=platform.node() or "ShiftVoice",
+                    kind="studio",
+                    meta={"job_id": job_id, "voice": voice},
+                )
+            except Exception:
+                pass
+
+    def _run_podcast_job(self, job_id: str) -> None:
         job = self._find_job(job_id)
         if not job:
             return
@@ -1434,7 +1565,22 @@ class Api:
             stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             export = Path(self.output_dir) / f"shiftvoice_podcast_{stamp}_{job_id}.mp3"
             export.write_bytes(out.read_bytes())
-            self._track_usage("x" * total_chars, kind="podcast", job_id=job_id, title=job.get("title") or "")
+            voice_list = [
+                (l.get("voice") or "")
+                for l in valid_lines
+                if (l.get("voice") or "").strip()
+            ]
+            uniq_voices = list(dict.fromkeys(voice_list))
+            elapsed_ms = int(max(0.0, (time.time() - started) * 1000))
+            self._track_usage(
+                "x" * total_chars,
+                kind="podcast",
+                job_id=job_id,
+                title=job.get("title") or "",
+                voice=uniq_voices[0] if uniq_voices else "multi",
+                voices=uniq_voices,
+                elapsed_ms=elapsed_ms,
+            )
             item = {
                 "id": job_id,
                 "title": (job.get("title") or f"Podcast · {len(valid_lines)} lines")[:80],
@@ -1463,19 +1609,6 @@ class Api:
                 }
             )
             self._upsert_job(done_job)
-            self._push_supabase(
-                "shiftvoice_jobs",
-                {
-                    "id": job_id,
-                    "kind": "podcast",
-                    "status": "done",
-                    "title": done_job.get("title") or "",
-                    "chars": total_chars,
-                    "path": str(export),
-                    "created_at": done_job.get("createdAt"),
-                    "updated_at": done_job.get("updatedAt"),
-                },
-            )
         except Exception as e:
             safe = _safe_user_message(e, "Podcast generation failed. Please try again.")
             _append_admin_error("podcast_job", e, safe)
@@ -1490,6 +1623,17 @@ class Api:
                 }
             )
             self._upsert_job(failed)
+            try:
+                supabase_sync.bump_tts(
+                    chars=0,
+                    exports=0,
+                    success=False,
+                    display_name=platform.node() or "ShiftVoice",
+                    kind="podcast",
+                    meta={"job_id": job_id},
+                )
+            except Exception:
+                pass
 
     async def _synthesize(
         self,

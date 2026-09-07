@@ -110,7 +110,7 @@ export const LiveAnalytics: React.FC<{ devices: DeviceInfo[]; product?: AdminPro
                   <th className="lt-hwid">Device ID</th>
                   <th className="lt-status">Status</th>
                   <th className="lt-num">{isGrab ? 'DL' : isVoice ? 'Chars' : 'Img'}</th>
-                  <th className="lt-num">Vid</th>
+                  <th className="lt-num">{isVoice ? 'Exports' : 'Vid'}</th>
                   <th className="lt-num">Fail</th>
                   <th className="lt-time">Process</th>
                   <th className="lt-bytes">Weight</th>

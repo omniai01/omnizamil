@@ -120,6 +120,21 @@ export type PlatformStat = {
   fails: number;
 };
 
+export type VoiceStat = {
+  voice: string;
+  events: number;
+  chars: number;
+  ok: number;
+  fails: number;
+};
+
+export type VoiceTodayStats = {
+  processMs: number;
+  events: number;
+  chars: number;
+  pendingJobs: number;
+};
+
 type SettingsRow = {
   maintenance_enabled: boolean;
   maintenance_message: string;
@@ -163,6 +178,8 @@ export type AdminSnapshot = {
   brand: BrandConfig;
   siteAnalytics: SiteAnalyticsStats;
   platforms?: PlatformStat[];
+  voices?: VoiceStat[];
+  voiceToday?: VoiceTodayStats;
   errorLoadWarning?: string;
 };
 
@@ -207,6 +224,8 @@ export async function loadAdminSnapshot(
     metricsRpc,
     countriesRpc,
     platformsRpc,
+    voicesRpc,
+    todayRpc,
   ] = await Promise.all([
     sb.from(t.errorLogs).select('*').order('created_at', { ascending: false }).limit(100),
     sb.from(t.appSettings).select('*').eq('id', 1).maybeSingle(),
@@ -214,6 +233,12 @@ export async function loadAdminSnapshot(
     sb.rpc(t.countryRpc),
     t.platformRpc
       ? sb.rpc(t.platformRpc)
+      : Promise.resolve({ data: null, error: null }),
+    t.voiceRpc
+      ? sb.rpc(t.voiceRpc, { limit_n: 20 })
+      : Promise.resolve({ data: null, error: null }),
+    t.todayRpc
+      ? sb.rpc(t.todayRpc)
       : Promise.resolve({ data: null, error: null }),
   ]);
 
@@ -377,6 +402,40 @@ export async function loadAdminSnapshot(
     }));
   }
 
+  let voices: VoiceStat[] | undefined;
+  if (voicesRpc && !voicesRpc.error && Array.isArray(voicesRpc.data)) {
+    type VoiceJson = {
+      voice?: string;
+      events?: number;
+      chars?: number;
+      ok?: number;
+      fails?: number;
+    };
+    voices = (voicesRpc.data as VoiceJson[]).map((v) => ({
+      voice: v.voice || 'unknown',
+      events: Number(v.events) || 0,
+      chars: Number(v.chars) || 0,
+      ok: Number(v.ok) || 0,
+      fails: Number(v.fails) || 0,
+    }));
+  }
+
+  let voiceToday: VoiceTodayStats | undefined;
+  if (todayRpc && !todayRpc.error && todayRpc.data && typeof todayRpc.data === 'object') {
+    const td = todayRpc.data as {
+      process_ms?: number;
+      events?: number;
+      chars?: number;
+      pending_jobs?: number;
+    };
+    voiceToday = {
+      processMs: Number(td.process_ms) || 0,
+      events: Number(td.events) || 0,
+      chars: Number(td.chars) || 0,
+      pendingJobs: Number(td.pending_jobs) || 0,
+    };
+  }
+
   const errorLogs: ErrorLog[] = ((eErr ? [] : errors || []) as ErrorRow[]).map((e) => ({
     id: e.id,
     deviceId: e.hwid,
@@ -442,6 +501,8 @@ export async function loadAdminSnapshot(
     brand,
     siteAnalytics,
     platforms,
+    voices,
+    voiceToday,
     errorLoadWarning: errorLoadWarning || undefined,
   };
 }

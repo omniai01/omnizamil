@@ -21,6 +21,8 @@ import {
   type BrandConfig,
   type PlatformStat,
   type SocialLinks,
+  type VoiceStat,
+  type VoiceTodayStats,
 } from './lib/supabaseAdmin';
 import { productFromHash, setProductHash, type AdminProduct } from './lib/product';
 import { LiveAnalytics } from './components/LiveAnalytics';
@@ -112,6 +114,8 @@ export const App: React.FC = () => {
   const [users, setUsers] = useState<UserMetric[]>([]);
   const [countries, setCountries] = useState<CountryStat[]>([]);
   const [platforms, setPlatforms] = useState<PlatformStat[]>([]);
+  const [voices, setVoices] = useState<VoiceStat[]>([]);
+  const [voiceToday, setVoiceToday] = useState<VoiceTodayStats | undefined>(undefined);
   const [errorLogs, setErrorLogs] = useState<ErrorLog[]>([]);
   const [maintenanceConfig, setMaintenanceConfig] = useState<MaintenanceConfig>(() =>
     emptyMaintenanceFor(productFromHash()),
@@ -133,6 +137,8 @@ export const App: React.FC = () => {
       setUsers(snap.users);
       setCountries(snap.countries);
       setPlatforms(snap.platforms || []);
+      setVoices(snap.voices || []);
+      setVoiceToday(snap.voiceToday);
       setErrorLogs(snap.errorLogs);
       setMaintenanceConfig(snap.maintenanceConfig);
       setSocialLinks(snap.socialLinks);
@@ -280,6 +286,8 @@ export const App: React.FC = () => {
               countries={countries}
               product={product}
               platforms={platforms}
+              voices={voices}
+              voiceToday={voiceToday}
             />
           )}
           {activeTab === 'live' && <LiveAnalytics devices={devices} product={product} />}

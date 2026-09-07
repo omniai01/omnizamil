@@ -34,7 +34,7 @@ export const UserLeaderboard: React.FC<{ users: UserMetric[]; product?: AdminPro
                 <th>Country</th>
                 <th>Joined</th>
                 <th>{isGrab ? 'Downloads' : isVoice ? 'Chars' : 'Images'}</th>
-                <th>Videos</th>
+                <th>{isVoice ? 'Exports' : 'Videos'}</th>
               </tr>
             </thead>
             <tbody>
