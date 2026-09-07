@@ -1,0 +1,94 @@
+{
+  "name": "shiftgrab",
+  "version": "1.1.4",
+  "private": true,
+  "description": "ShiftGrab — on-device YouTube downloader by ShiftZero",
+  "author": "ShiftZero",
+  "main": "./out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "start": "electron-vite preview",
+    "dist": "npm run build && electron-builder --win nsis",
+    "dist:dir": "npm run build && electron-builder --win dir"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.115.0",
+    "ffmpeg-static": "^5.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "electron": "^35.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^3.1.0",
+    "rcedit": "^5.0.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3"
+  },
+  "build": {
+    "appId": "net.shiftzero.shiftgrab",
+    "productName": "ShiftGrab",
+    "copyright": "Copyright © ShiftZero",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraFiles": [
+      {
+        "from": "build/ShiftGrabLauncher.exe",
+        "to": "ShiftGrabLauncher.exe"
+      },
+      {
+        "from": "build/ShiftGrabReorg.exe",
+        "to": "ShiftGrabReorg.exe"
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/ffmpeg-static/ffmpeg.exe",
+        "to": "ffmpeg/ffmpeg.exe"
+      },
+      {
+        "from": "resources/icon.ico",
+        "to": "icon.ico"
+      }
+    ],
+    "afterPack": "build/afterPack.cjs",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "resources/icon.ico",
+      "artifactName": "ShiftGrab-Setup-${version}.exe",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ShiftGrab",
+      "installerIcon": "resources/icon.ico",
+      "uninstallerIcon": "resources/icon.ico",
+      "include": "installer.nsh"
+    }
+  }
+}

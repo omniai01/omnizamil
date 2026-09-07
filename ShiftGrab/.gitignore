@@ -1,0 +1,13 @@
+﻿node_modules
+out
+dist
+release
+win-unpacked
+.DS_Store
+*.log
+*.exe
+.vscode
+.idea
+.env
+.env.*
+!.env.example

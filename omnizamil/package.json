@@ -1,0 +1,116 @@
+{
+  "name": "omni-removal",
+  "version": "1.0.3",
+  "private": true,
+  "description": "Omni-Removal — desktop watermark cleaner",
+  "author": "Omni",
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "prepare:runtime": "node scripts/prepare-bundled-runtime.mjs",
+    "dist": "npm run prepare:runtime && npm run build && electron-builder --win nsis",
+    "dist:dir": "npm run prepare:runtime && npm run build && electron-builder --win dir",
+    "preview": "vite preview",
+    "db:schema-help": "node scripts/apply-schema.mjs"
+  },
+  "dependencies": {
+    "@fontsource/poppins": "^5.2.6",
+    "@supabase/supabase-js": "^2.115.0",
+    "jszip": "^3.10.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "electron": "^35.2.1",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-electron-renderer": "^0.14.6"
+  },
+  "build": {
+    "appId": "com.omni.removal",
+    "productName": "Omni-Removal",
+    "copyright": "Copyright © Omni",
+    "directories": {
+      "output": "release-v103",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json",
+      "build/icon.ico",
+      "build/icon.png"
+    ],
+    "extraResources": [
+      {
+        "from": "engine/gwr_video",
+        "to": "engine/gwr_video",
+        "filter": [
+          "**/*",
+          "!**/.git/**",
+          "!**/*.map",
+          "!**/test-results/**",
+          "!**/README.md"
+        ]
+      },
+      {
+        "from": "bundled-runtime",
+        "to": "bundled-runtime",
+        "filter": [
+          "**/*",
+          "!**/tmp-*/**",
+          "!**/*.zip"
+        ]
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "build/OmniLauncher.exe",
+        "to": "OmniLauncher.exe"
+      },
+      {
+        "from": "build/OmniReorg.exe",
+        "to": "OmniReorg.exe"
+      }
+    ],
+    "afterPack": "build/afterPack.cjs",
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "Omni-Watermark-Removal-Setup-${version}.${ext}",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Omni-Removal",
+      "uninstallDisplayName": "Omni-Removal",
+      "include": "build/installer.nsh",
+      "installerIcon": "build/installerIcon.ico",
+      "uninstallerIcon": "build/installerIcon.ico",
+      "installerHeaderIcon": "build/installerIcon.ico",
+      "installerSidebar": "build/installerSidebar.bmp",
+      "uninstallerSidebar": "build/installerSidebar.bmp"
+    },
+    "asar": true,
+    "asarUnpack": []
+  }
+}

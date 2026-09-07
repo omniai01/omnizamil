@@ -1,0 +1,9 @@
+{
+  "name": "gwr-video-runtime",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "mediabunny": "^1.46.0",
+    "playwright": "^1.58.2"
+  }
+}
