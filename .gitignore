@@ -32,3 +32,11 @@ Thumbs.db
 # Misc heavy / local
 *.mp4
 samples/smoke-out.mp4
+
+# ShiftVoice
+**/work/previews/
+__pycache__/
+*.pyc
+.venv/
+venv/
+

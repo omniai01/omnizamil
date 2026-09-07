@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShiftVoice — ShiftZero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img class="brand-mark img" src="assets/shiftvoice-logo.png" alt="ShiftVoice" />
+        <div class="brand-text">
+          <h1>ShiftVoice</h1>
+          <p>by ShiftZero</p>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button type="button" class="nav-item active" data-tab="dashboard">
+          <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20H4Z"/><path d="M9 20v-6h6v6"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="studio">
+          <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3M9 21h6"/></svg>
+          <span>Voice Studio</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="podcast">
+          <svg viewBox="0 0 24 24"><path d="M12 17a5 5 0 0 0 5-5V7a5 5 0 0 0-10 0v5a5 5 0 0 0 5 5Z"/><path d="M4 11v1a8 8 0 0 0 16 0v-1M12 20v2"/></svg>
+          <span>Podcast</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="jobs">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M8 6V4h8v2M8 12h8"/></svg>
+          <span>Jobs</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="voices">
+          <svg viewBox="0 0 24 24"><path d="M5 9v6M9 6v12M13 3v18M17 7v10M21 10v4"/></svg>
+          <span>Voices</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="library">
+          <svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></svg>
+          <span>Library</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="batch">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v4H4zM4 14h16v4H4z"/></svg>
+          <span>Batch</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="usage">
+          <svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v4M12 11v8M16 7v12"/></svg>
+          <span>Usage</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="silence">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18 6a8 8 0 0 1 0 12"/></svg>
+          <span>Silence</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="roadmap">
+          <svg viewBox="0 0 24 24"><path d="M5 19V5h6l1 2h7v8h-8l-1-2H7v6z"/></svg>
+          <span>Roadmap</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.09A1.7 1.7 0 0 0 8.55 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3V9.6h.09A1.7 1.7 0 0 0 4.6 8.55a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.45 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.14.38.36.72.66 1 .3.27.68.4 1.08.4H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+          <span>Settings</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="shiftzero">
+          <svg viewBox="0 0 24 24"><path d="M12 3 4 11l4 4 4-4 4 4 4-4-8-8Z"/><path d="m8 15 4 4 4-4"/></svg>
+          <span>ShiftZero</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="status-row">
+          <span class="dot" id="onlineDot"></span>
+          <span id="onlineLabel">Checking…</span>
+        </div>
+        <p class="foot-note">ShiftZero Free Voices</p>
+        <div class="side-mini">
+          <span>Exports <strong id="sideExports">0</strong></span>
+          <button type="button" class="linkish" id="btnResetHistorySide">Reset history</button>
+        </div>
+        <button type="button" class="btn-sidebar" id="btnShiftZero">Visit ShiftZero</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <div class="eyebrow" id="pageEyebrow">HOME / DASHBOARD</div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p class="page-desc" id="pageDesc">Welcome to ShiftVoice by ShiftZero.</p>
+        </div>
+        <div class="header-actions">
+          <span class="pill" id="voiceCountPill">0 voices</span>
+        </div>
+      </header>
+
+      <!-- Dashboard -->
+      <section class="panel active" id="tab-dashboard">
+        <div class="dash-hero card anim-in">
+          <img class="dash-logo" src="assets/shiftvoice-logo.png" alt="ShiftVoice logo" />
+          <div>
+            <p class="dash-hello" id="dashHello">Good evening, welcome</p>
+            <h3 class="dash-title">Welcome to <em>ShiftVoice</em></h3>
+            <p class="muted">TTS by ShiftZero. Free high-quality ShiftVoice voices on your desktop. Write a script, pick a voice, export MP3.</p>
+            <div class="btn-row tight wrap" style="margin-top:14px">
+              <button type="button" class="btn primary" data-goto="studio">Open Voice Studio</button>
+              <button type="button" class="btn ghost" data-goto="voices">Browse voices</button>
+              <button type="button" class="btn ghost" data-goto="podcast">Make a podcast</button>
+            </div>
+          </div>
+        </div>
+        <div class="dash-stats">
+          <div class="stat-card anim-in"><span>Money saved</span><strong id="statMoney">$0.00</strong><em>vs paid cloud TTS rates</em></div>
+          <div class="stat-card anim-in delay-1"><span>Characters spoken</span><strong id="statChars">0</strong><em>total generated text</em></div>
+          <div class="stat-card anim-in delay-2"><span>Exports</span><strong id="statExports">0</strong><em>MP3 files created</em></div>
+          <div class="stat-card anim-in delay-2"><span>Saved voices</span><strong id="statFavs">0</strong><em>in your voice library</em></div>
+        </div>
+        <div class="card soft anim-in overview-card">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Overview · price comparison</h3>
+              <p class="muted tight">What big TTS tools charge vs ShiftVoice on your desktop — $0, local, unlimited personal use.</p>
+            </div>
+            <span class="pill">vs ~$15 / 1M chars</span>
+          </div>
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Typical price</th>
+                  <th>Voices</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ElevenLabs</td>
+                  <td>~$5–$99+/mo</td>
+                  <td>Hundreds</td>
+                  <td>Cloud · usage caps · cloning plans</td>
+                </tr>
+                <tr>
+                  <td>Murf / Play.ht</td>
+                  <td>~$19–$99+/mo</td>
+                  <td>Dozens–hundreds</td>
+                  <td>Studio subscriptions</td>
+                </tr>
+                <tr>
+                  <td>Amazon / Google / Azure</td>
+                  <td>~$4–$16 / 1M chars</td>
+                  <td>Dozens–100+</td>
+                  <td>Pay-as-you-go APIs</td>
+                </tr>
+                <tr class="compare-you">
+                  <td><strong>ShiftVoice</strong></td>
+                  <td><strong>$0</strong></td>
+                  <td><strong>100+ ShiftVoice</strong></td>
+                  <td>Desktop app · ShiftZero Free Voices</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted tight" style="margin-top:10px">Your <strong id="overviewMoneyNote">$0.00</strong> money saved uses commercial ~$15 / 1M character rates.</p>
+        </div>
+        <div class="dash-grid">
+          <div class="card soft anim-in">
+            <h3>Quick start</h3>
+            <div class="tip-steps">
+              <div class="tip-step"><span>1</span><div><strong>Type your script</strong><p>Use Voice Studio for single speakers. Pick language + voice.</p></div></div>
+              <div class="tip-step"><span>2</span><div><strong>Pick ShiftVoice names</strong><p>Every voice has a unique branded name.</p></div></div>
+              <div class="tip-step"><span>3</span><div><strong>Save favorites & pairs</strong><p>Lock two voices for podcast host/guest, then generate.</p></div></div>
+            </div>
+          </div>
+          <div class="card soft anim-in delay-1">
+            <h3>Studio tools</h3>
+            <div class="tool-tiles">
+              <button type="button" class="tool-tile" data-goto="studio"><strong>Voice Studio</strong><span>Script → voice → MP3</span></button>
+              <button type="button" class="tool-tile" data-goto="podcast"><strong>Podcast</strong><span>Host & guest dialogues</span></button>
+              <button type="button" class="tool-tile" data-goto="voices"><strong>Voices</strong><span>Browse, save, pair</span></button>
+              <button type="button" class="tool-tile" data-goto="library"><strong>Library</strong><span>Exports & podcast pairs</span></button>
+            </div>
+            <p class="muted tight" style="margin-top:12px">Fast parallel engine: long scripts (20–50 min) render in chunked batches.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Studio -->
+      <section class="panel" id="tab-studio">
+        <div class="grid-2">
+          <div class="card anim-in">
+            <div class="card-head-row">
+              <label class="field-label" for="studioText">Script</label>
+              <span class="mono meta-line" id="studioMeta">0 chars · ~0s</span>
+            </div>
+            <textarea id="studioText" rows="12" placeholder="Type your script here…"></textarea>
+            <div class="row-controls studio-controls">
+              <div class="field">
+                <label for="studioLang">Language</label>
+                <select id="studioLang"><option value="all">All languages</option></select>
+              </div>
+              <div class="field">
+                <label for="voiceSelect">Voice</label>
+                <select id="voiceSelect"><option value="">Loading voices…</option></select>
+              </div>
+              <div class="field slim">
+                <label for="rate">Rate</label>
+                <input id="rate" type="range" min="-50" max="50" value="0" />
+                <span class="mono" id="rateVal">+0%</span>
+              </div>
+              <div class="field slim">
+                <label for="pitch">Pitch</label>
+                <input id="pitch" type="range" min="-50" max="50" value="0" />
+                <span class="mono" id="pitchVal">+0Hz</span>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn ghost" id="btnPreview"><span class="btn-label">Preview</span></button>
+              <button type="button" class="btn ghost hidden" id="btnStopPreview"><span class="btn-label">Stop</span></button>
+              <button type="button" class="btn primary" id="btnGenerate"><span class="btn-label">Generate MP3</span></button>
+            </div>
+            <p class="hint" id="studioHint"></p>
+            <div class="preview-stage hidden" id="studioPreviewStage">
+              <div class="preview-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+              <audio id="studioAudio" controls class="audio"></audio>
+            </div>
+          </div>
+          <div class="card soft anim-in delay-1 tip-card">
+            <h3>What you can do</h3>
+            <div class="tip-steps">
+              <div class="tip-step"><span>1</span><div><strong>Write</strong><p>Paste or type your script on the left.</p></div></div>
+              <div class="tip-step"><span>2</span><div><strong>Pick a voice</strong><p>Browse ShiftZero Free Voices with unique names.</p></div></div>
+              <div class="tip-step"><span>3</span><div><strong>Generate</strong><p>Preview first, then save an MP3 to your folder.</p></div></div>
+            </div>
+            <div class="stat-strip">
+              <div><em id="statVoices">—</em><span>Voices</span></div>
+              <div><em id="statJobs">—</em><span>Exports</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Podcast -->
+      <section class="panel" id="tab-podcast">
+        <div class="card anim-in podcast-top">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Multi-voice dialogue</h3>
+              <p class="muted tight">Type or upload a Male/Female script. Stats auto-fill, then generate as a background job.</p>
+            </div>
+            <div class="btn-row tight">
+              <button type="button" class="btn icon-help" id="btnScriptHelp" title="Script format help">?</button>
+              <button type="button" class="btn ghost" id="btnImportScript">Upload .txt / .docx</button>
+              <button type="button" class="btn primary" id="btnPodcast">Start audio job</button>
+            </div>
+          </div>
+          <label class="field-label" for="podcastScriptBox">Script</label>
+          <textarea id="podcastScriptBox" rows="7" placeholder="Male: Hello everyone.&#10;Female: Welcome back.&#10;Male: Let's begin."></textarea>
+          <div class="btn-row tight" style="margin-top:8px">
+            <button type="button" class="btn ghost" id="btnParsePodcastScript">Build dialogue lines</button>
+            <span class="muted" id="podcastFileLabel"></span>
+          </div>
+          <div class="pod-stats" id="podStats">
+            <div><em id="podStatLines">0</em><span>Lines</span></div>
+            <div><em id="podStatChars">0</em><span>Characters</span></div>
+            <div><em id="podStatSpeakers">0</em><span>Speakers</span></div>
+            <div><em id="podStatMinutes">0</em><span>Est. minutes</span></div>
+          </div>
+          <div class="pair-panel">
+            <div class="pair-panel-head">
+              <strong>Apply Host & Guest</strong>
+              <span class="muted">Saved podcast pairs from your library</span>
+            </div>
+            <div class="pair-radio-list" id="pairRadioList">
+              <p class="muted">No saved pairs yet. Save two voices from Voices → Save for podcast.</p>
+            </div>
+            <button type="button" class="btn primary" id="btnApplyPair">Apply selected pair</button>
+          </div>
+          <div class="pod-progress">
+            <div class="pod-progress-meta">
+              <span id="podProgressLabel">Ready when you are</span>
+              <span class="mono" id="podProgressPct">0%</span>
+            </div>
+            <div class="pod-bar"><i id="podProgressBar"></i></div>
+            <p class="muted tight" id="podEta">Estimated time appears after you add lines.</p>
+          </div>
+          <audio id="podcastAudio" controls class="audio hidden"></audio>
+          <p class="hint" id="podcastHint"></p>
+        </div>
+        <div class="card anim-in delay-1 pod-advanced" style="margin-top:14px">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Dialogue summary <span class="pill" id="podLineCountPill">0</span></h3>
+              <p class="muted tight">Edit in the script box above. Advanced line editor stays collapsed so the page stays short.</p>
+            </div>
+            <button type="button" class="btn ghost" id="btnTogglePodLines">Show advanced lines</button>
+          </div>
+          <div id="podLinesAdvanced" class="hidden">
+            <div class="btn-row between" style="margin-bottom:8px">
+              <span class="muted">Optional per-line speaker / voice tweaks</span>
+              <button type="button" class="btn ghost" id="btnAddLine">+ Add line</button>
+            </div>
+            <div id="podcastLines" class="podcast-lines compact"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Jobs -->
+      <section class="panel" id="tab-jobs">
+        <div class="btn-row between wrap">
+          <div>
+            <h3>Jobs monitor</h3>
+            <p class="muted tight">Live generation queue — stays running if you leave this screen.</p>
+          </div>
+          <div class="btn-row tight">
+            <input id="jobSearch" type="search" placeholder="Search jobs…" style="max-width:220px" />
+            <button type="button" class="btn ghost" id="btnRefreshJobs">Refresh</button>
+          </div>
+        </div>
+        <div class="jobs-latest card" id="jobsLatest">
+          <strong>Latest job</strong>
+          <p class="muted" id="jobsLatestBody">No jobs yet.</p>
+        </div>
+        <div class="jobs-list" id="jobsList"></div>
+      </section>
+
+      <!-- Voices -->
+      <section class="panel" id="tab-voices">
+        <div class="voices-layout">
+          <aside class="voices-rail card anim-in">
+            <h3>Catalogue</h3>
+            <div class="rail-stat"><em id="railTotal">0</em><span>High-quality free voices</span></div>
+            <div class="rail-stat"><em id="railShown">0</em><span>Showing now</span></div>
+            <div class="rail-stat"><em id="railExports">0</em><span>Your exports</span></div>
+            <div class="rail-tags" id="railGenderTags"></div>
+            <h4>Saved voices <span id="favCountBadge" class="tag">0</span></h4>
+            <p class="muted tight">Tap a saved voice to use it, or Pair-select from here.</p>
+            <div class="saved-voices-box recent-list" id="favList"><p class="muted">Save voices you like — they appear here.</p></div>
+            <h4>Podcast pair</h4>
+            <p class="muted tight">Select exactly 2 voices, name the pair, then Create new or Update an old pair.</p>
+            <div id="pairPickBox" class="pair-pick">None selected</div>
+            <div class="pair-mode-row">
+              <label class="pair-mode"><input type="radio" name="pairMode" value="create" checked /> Create new</label>
+              <label class="pair-mode"><input type="radio" name="pairMode" value="update" /> Update old</label>
+            </div>
+            <select id="pairUpdateSelect" class="hidden">
+              <option value="">Choose pair…</option>
+            </select>
+            <input id="pairName" type="text" placeholder="Pair name e.g. Morning Show" />
+            <button type="button" class="btn primary" id="btnSavePair" style="width:100%;margin-top:8px">Save pair</button>
+            <p class="hint" id="pairSaveHint"></p>
+            <div id="pairsList" class="pairs-list"></div>
+            <h4>Recent</h4>
+            <div class="recent-list" id="recentVoices"><p class="muted">Previews show up here.</p></div>
+          </aside>
+          <div class="voices-main">
+            <div class="toolbar anim-in">
+              <input id="voiceSearch" type="search" placeholder="Search branded voice names…" />
+              <select id="langFilter"><option value="all">All languages</option></select>
+              <select id="genderFilter">
+                <option value="all">All genders</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+              </select>
+              <select id="voiceScope">
+                <option value="all">All voices</option>
+                <option value="saved">Saved only</option>
+              </select>
+              <button type="button" class="btn ghost" id="btnRefreshVoices">Refresh</button>
+            </div>
+            <div class="voice-grid" id="voiceGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Library -->
+      <section class="panel" id="tab-library">
+        <div class="lib-tabs" id="libTabs">
+          <button type="button" class="lib-tab active" data-lib="exports">Recent exports</button>
+          <button type="button" class="lib-tab" data-lib="pairs">Podcast pairs</button>
+        </div>
+        <div id="libExportsPane">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Generated audio</h3>
+              <p class="muted tight">Your recent downloads / exports on this machine.</p>
+            </div>
+            <div class="btn-row tight">
+              <button type="button" class="btn ghost" id="btnRefreshLib">Refresh</button>
+              <button type="button" class="btn ghost" id="btnResetHistory">Reset history</button>
+            </div>
+          </div>
+          <div class="lib-list" id="libList"></div>
+          <div class="preview-stage hidden" id="libPreviewStage" style="margin-top:12px">
+            <div class="preview-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <audio id="libAudio" controls class="audio"></audio>
+            <p class="muted tight" id="libPlayHint" style="margin-top:8px;color:#cfe"></p>
+          </div>
+        </div>
+        <div id="libPairsPane" class="hidden">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Podcast pairs</h3>
+              <p class="muted tight">Search, edit host/guest, or remove a saved pair.</p>
+            </div>
+          </div>
+          <input id="pairSearch" type="search" placeholder="Search podcast pairs…" style="max-width:320px;margin-bottom:12px" />
+          <div class="lib-list" id="libPairsList"></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h3>Your saved voices</h3>
+          <p class="muted tight">Single saved voices from your library — tap to select.</p>
+          <div class="saved-voices-box" id="libSavedVoices"><p class="muted">No saved voices yet.</p></div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="panel" id="tab-settings">
+        <div class="card anim-in">
+          <h3>Output folder</h3>
+          <p class="muted">Finished MP3 files are saved here.</p>
+          <div class="path-box mono" id="outputPath">—</div>
+          <div class="btn-row wrap">
+            <button type="button" class="btn primary" id="btnChooseOut">Choose folder</button>
+            <button type="button" class="btn ghost" id="btnCreateOut">Create folder</button>
+            <button type="button" class="btn ghost" id="btnOpenOut">Open folder</button>
+          </div>
+          <p class="hint" id="settingsFolderHint"></p>
+        </div>
+        <div class="card anim-in delay-1" style="margin-top:14px">
+          <h3>Updates</h3>
+          <p class="muted">Check whether a newer ShiftVoice build is available. Custom voice-model installs are not supported.</p>
+          <div class="btn-row wrap">
+            <button type="button" class="btn primary" id="btnCheckUpdates">Check for updates</button>
+            <button type="button" class="btn ghost" id="btnOpenOutHint">Open download folder</button>
+          </div>
+          <p class="hint" id="updateHint"></p>
+          <div class="whats-new">
+            <h4>What’s new in <span id="settingsVersion">1.5.0</span></h4>
+            <ul>
+              <li>Silence tools after generate · separate Admin app</li>
+              <li>Silence page: remove silence from generated MP3s</li>
+              <li>Batch Studio: single-wise &amp; podcast-wise multi-script jobs</li>
+              <li>Usage panel with local totals</li>
+              <li>App window icon set to ShiftVoice logo</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Batch Studio -->
+      <section class="panel" id="tab-batch">
+        <div class="card anim-in">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Batch Studio</h3>
+              <p class="muted tight">Queue many scripts at once. Each item becomes a Jobs entry and keeps running in the background.</p>
+            </div>
+            <div class="batch-mode-row" id="batchKindRow">
+              <label class="pair-mode"><input type="radio" name="batchKind" value="studio" checked /> Single-wise</label>
+              <label class="pair-mode"><input type="radio" name="batchKind" value="podcast" /> Podcast-wise</label>
+            </div>
+          </div>
+          <div class="batch-voice-mode" id="batchVoiceModeRow">
+            <strong>Voices</strong>
+            <label class="pair-mode"><input type="radio" name="batchVoiceMode" value="same" checked /> Same for all</label>
+            <label class="pair-mode"><input type="radio" name="batchVoiceMode" value="per" /> Separate per script</label>
+          </div>
+          <div class="row-controls" id="batchSameVoiceRow" style="margin-top:10px">
+            <div class="field" id="batchStudioVoiceField">
+              <label for="batchVoice">Voice for all</label>
+              <select id="batchVoice"><option value="">Choose…</option></select>
+            </div>
+            <div class="field hidden" id="batchPodcastPairField">
+              <label for="batchPair">Host / Guest pair for all</label>
+              <select id="batchPair"><option value="">Choose pair…</option></select>
+            </div>
+          </div>
+          <div class="btn-row wrap" style="margin-top:12px">
+            <button type="button" class="btn ghost" id="btnBatchAddBlank">+ Add script slot</button>
+            <button type="button" class="btn ghost" id="btnBatchUpload">Upload scripts (.txt / .md / .docx)</button>
+            <button type="button" class="btn primary" id="btnBatchStart">Start batch jobs</button>
+          </div>
+          <p class="hint" id="batchHint"></p>
+          <div class="batch-stats" id="batchStats">
+            <div><em id="batchStatCount">0</em><span>Scripts</span></div>
+            <div><em id="batchStatChars">0</em><span>Characters</span></div>
+            <div><em id="batchStatSpeakers">0</em><span>Speakers found</span></div>
+          </div>
+          <div id="batchList" class="batch-list"></div>
+        </div>
+      </section>
+
+      <!-- Usage -->
+      <section class="panel" id="tab-usage">
+        <div class="card anim-in">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Usage panel</h3>
+              <p class="muted tight">Chars, exports, batches, and job totals on this machine.</p>
+            </div>
+            <button type="button" class="btn ghost" id="btnRefreshUsage">Refresh</button>
+          </div>
+          <div class="dash-stats" id="usageStatsRow">
+            <div class="stat-card"><span>Characters</span><strong id="usageChars">0</strong><em>spoken total</em></div>
+            <div class="stat-card"><span>Exports</span><strong id="usageExports">0</strong><em>MP3 files</em></div>
+            <div class="stat-card"><span>Money saved</span><strong id="usageMoney">$0.00</strong><em>vs ~$15/1M</em></div>
+            <div class="stat-card"><span>Batches</span><strong id="usageBatches">0</strong><em>batch runs</em></div>
+          </div>
+          <div class="dash-stats" style="margin-top:12px">
+            <div class="stat-card"><span>Jobs done</span><strong id="usageJobsDone">0</strong><em>completed</em></div>
+            <div class="stat-card"><span>Jobs failed</span><strong id="usageJobsFail">0</strong><em>errors</em></div>
+            <div class="stat-card"><span>Studio jobs</span><strong id="usageJobsStudio">0</strong><em>single</em></div>
+            <div class="stat-card"><span>Podcast jobs</span><strong id="usageJobsPod">0</strong><em>multi-voice</em></div>
+          </div>
+          <h4 style="margin:16px 0 8px">Recent activity</h4>
+          <div class="lib-list" id="usageEventList"><div class="empty">No usage events yet.</div></div>
+        </div>
+      </section>
+
+      <!-- Silence -->
+      <section class="panel" id="tab-silence">
+        <div class="card anim-in" id="silenceCard">
+          <div class="btn-row between wrap">
+            <div>
+              <h3>Remove silence</h3>
+              <p class="muted tight">Generate audio first in Studio / Podcast / Batch. Then clean silence here — optional, light on your PC.</p>
+            </div>
+            <button type="button" class="btn ghost" id="btnSilenceRefresh">Refresh list</button>
+          </div>
+          <div class="field keep-field" style="margin-top:10px">
+            <label>Keep short pauses</label>
+            <div class="keep-pills" id="silenceKeepPills">
+              <button type="button" class="keep-pill" data-keep="0">None</button>
+              <button type="button" class="keep-pill active" data-keep="0.05">Soft</button>
+              <button type="button" class="keep-pill" data-keep="0.1">Natural</button>
+              <button type="button" class="keep-pill" data-keep="0.2">Long</button>
+            </div>
+            <input id="silenceKeep" type="hidden" value="0.05" />
+            <p class="muted tight" id="silenceKeepLabel">Soft · 0.05s breath between phrases</p>
+          </div>
+          <div class="path-box mono" id="silenceAudioPath">No file selected</div>
+          <div class="btn-row wrap" style="margin-top:10px">
+            <button type="button" class="btn ghost" id="btnSilencePick">Choose audio file</button>
+            <button type="button" class="btn primary" id="btnSilenceRemove" disabled>Remove silence</button>
+          </div>
+          <p class="hint" id="silenceHint"></p>
+          <div class="preview-stage hidden" id="silencePreviewStage" style="margin-top:12px">
+            <audio id="silenceAudio" controls class="audio"></audio>
+          </div>
+          <h4 style="margin:16px 0 8px">Recent exports</h4>
+          <div class="lib-list" id="silenceExportList"><div class="empty">No exports yet.</div></div>
+        </div>
+      </section>
+
+      <!-- Roadmap -->
+      <section class="panel" id="tab-roadmap">
+        <div class="card soft anim-in">
+          <h3>Roadmap</h3>
+          <p class="muted tight">Shipped vs planned — Batch, Usage, and Jobs are live now.</p>
+          <div class="roadmap-grid">
+            <div class="roadmap-item done"><strong>Batch Studio</strong><span>Single-wise &amp; podcast-wise multi-script → Jobs</span></div>
+            <div class="roadmap-item done"><strong>Usage panel</strong><span>Chars, exports, batches, job counts</span></div>
+            <div class="roadmap-item done"><strong>Jobs queue</strong><span>Background generate with Play / Library / folder</span></div>
+            <div class="roadmap-item done"><strong>Silence remover</strong><span>Clean silence from exports after generate</span></div>
+            <div class="roadmap-item"><strong>SSML lite</strong><span>Pauses &amp; emphasis without full SSML</span></div>
+            <div class="roadmap-item"><strong>Export formats</strong><span>WAV, chapters, per-speaker stems</span></div>
+            <div class="roadmap-item"><strong>History tags</strong><span>Search &amp; tag old podcasts</span></div>
+            <div class="roadmap-item"><strong>Themes</strong><span>Light / dark ShiftGrab-style</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ShiftZero -->
+      <section class="panel" id="tab-shiftzero">
+        <div class="sz-about">
+          <section class="sz-card sz-hero-card anim-in">
+            <p class="sz-kicker">Developed by Team ShiftZero</p>
+            <div class="sz-brand-row">
+              <img class="sz-logo img" src="assets/shiftvoice-logo.png" alt="" />
+              <div>
+                <h2 class="sz-name">ShiftZero</h2>
+                <p class="sz-tagline">Zero cost. Always free.</p>
+              </div>
+            </div>
+            <p class="sz-desc">Small tools. Zero cost. Zero telemetry. ShiftVoice is part of the ShiftZero studio toolkit.</p>
+            <div class="sz-badges">
+              <span class="sz-badge">Zero Cost</span>
+              <span class="sz-badge">Zero Telemetry</span>
+              <span class="sz-badge">Free Voices</span>
+            </div>
+            <button type="button" class="btn primary" id="btnExploreProducts">Explore Products</button>
+          </section>
+          <section class="sz-card anim-in delay-1">
+            <h3 class="sz-section-title">How ShiftZero Works</h3>
+            <p class="sz-section-sub">How ShiftZero Runs Off-Grid</p>
+            <ol class="sz-steps">
+              <li><span class="sz-step-num">1</span><div><strong>Download Executable</strong><p>Grab the tool you need. Fast, private and on-device.</p><span class="sz-step-tip">No sign-up required</span></div></li>
+              <li><span class="sz-step-num">2</span><div><strong>Local Execution</strong><p>Your scripts and exports stay on your PC.</p><span class="sz-step-tip">100% On-Device files</span></div></li>
+              <li><span class="sz-step-num">3</span><div><strong>Unlimited $0 Processing</strong><p>Use ShiftVoice as much as you want.</p><span class="sz-step-tip">Truly Unlimited</span></div></li>
+            </ol>
+          </section>
+          <section class="sz-card sz-follow anim-in delay-2">
+            <h3 class="sz-section-title">Follow Team ShiftZero</h3>
+            <div class="sz-social" id="szSocial"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="importModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3>Upload script</h3>
+          <p class="muted">Use <code>Male:</code> and <code>Female:</code> on alternating lines. We split the cast and assign unique names automatically.</p>
+        </div>
+        <button type="button" class="btn ghost" id="btnCloseImport">Close</button>
+      </div>
+      <textarea id="importScriptText" rows="12" placeholder="Male: Welcome to the show.&#10;Female: Glad to be here.&#10;Male: Let's begin."></textarea>
+      <div class="import-feedback" id="importFeedback"><span>Waiting for your script</span></div>
+      <div class="btn-row">
+        <button type="button" class="btn primary" id="btnApplyImport" disabled><span id="importButtonLabel">Import script</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="helpModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3>Script format</h3>
+          <p class="muted">Write each line as gender + dialogue so ShiftVoice can auto-split speakers.</p>
+        </div>
+        <button type="button" class="btn ghost" id="btnCloseHelp">Close</button>
+      </div>
+      <div class="help-body">
+        <p><strong>Required format</strong></p>
+        <pre>Male: Hello everyone.
+Female: Welcome back.
+Male: Today we talk about tools.
+Female: And everything is free.</pre>
+        <p class="muted">Alternate Male / Female. Unique character names are assigned by language. You can still edit voices on each line after import.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="silenceOfferModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3>Remove silence?</h3>
+          <p class="muted">Your audio is ready. Clean quiet gaps now, or open Jobs to track it.</p>
+        </div>
+        <button type="button" class="btn ghost" id="btnSilenceOfferLater">Later</button>
+      </div>
+      <p class="mono path-box" id="silenceOfferPath">—</p>
+      <div class="btn-row wrap" style="margin-top:12px">
+        <button type="button" class="btn primary" id="btnSilenceOfferGo">Remove silence</button>
+        <button type="button" class="btn ghost" id="btnSilenceOfferJobs">Open Jobs</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="maint-overlay hidden" id="maintOverlay">
+    <div class="maint-card">
+      <img class="brand-mark lg img" src="assets/shiftvoice-logo.png" alt="" />
+      <h2>ShiftVoice maintenance</h2>
+      <p>We're updating ShiftVoice. Generation is paused for a moment. Please try again soon.</p>
+    </div>
+  </div>
+
+  <div class="boot" id="boot">
+    <div class="boot-card boot-anim">
+      <img class="brand-mark lg img boot-logo" src="assets/shiftvoice-logo.png" alt="" />
+      <strong>ShiftVoice</strong>
+      <span>Opening ShiftZero studio…</span>
+      <div class="boot-bar"><i></i></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

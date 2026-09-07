@@ -1,0 +1,89 @@
+{
+  "event": "summary",
+  "fiveHour": {
+    "ok": true,
+    "wallMin": 2.7,
+    "targetMin": 300.0,
+    "mb": 129.42,
+    "path": "D:\\zextts\\shiftvoice\\work\\bench_runs\\bench_5h_20260907_201841.mp3",
+    "error": null
+  },
+  "batch10x20": {
+    "okCount": 10,
+    "totalJobs": 10,
+    "wallMin": 4.38,
+    "perJobMinAvg": 0.44,
+    "jobs": [
+      {
+        "name": "batch_20m_01",
+        "voice": "en-US-JennyNeural",
+        "ok": true,
+        "wallMin": 0.22,
+        "mb": 8.63
+      },
+      {
+        "name": "batch_20m_02",
+        "voice": "en-US-GuyNeural",
+        "ok": true,
+        "wallMin": 0.28,
+        "mb": 8.73
+      },
+      {
+        "name": "batch_20m_03",
+        "voice": "en-GB-SoniaNeural",
+        "ok": true,
+        "wallMin": 0.86,
+        "mb": 7.99
+      },
+      {
+        "name": "batch_20m_04",
+        "voice": "en-GB-RyanNeural",
+        "ok": true,
+        "wallMin": 0.3,
+        "mb": 8.56
+      },
+      {
+        "name": "batch_20m_05",
+        "voice": "en-AU-NatashaNeural",
+        "ok": true,
+        "wallMin": 0.34,
+        "mb": 9.33
+      },
+      {
+        "name": "batch_20m_06",
+        "voice": "en-AU-WilliamNeural",
+        "ok": true,
+        "wallMin": 0.74,
+        "mb": 7.36
+      },
+      {
+        "name": "batch_20m_07",
+        "voice": "en-CA-ClaraNeural",
+        "ok": true,
+        "wallMin": 0.37,
+        "mb": 9.15
+      },
+      {
+        "name": "batch_20m_08",
+        "voice": "en-CA-LiamNeural",
+        "ok": true,
+        "wallMin": 0.33,
+        "mb": 8.31
+      },
+      {
+        "name": "batch_20m_09",
+        "voice": "en-IN-NeerjaNeural",
+        "ok": true,
+        "wallMin": 0.51,
+        "mb": 9.72
+      },
+      {
+        "name": "batch_20m_10",
+        "voice": "en-IN-PrabhatNeural",
+        "ok": true,
+        "wallMin": 0.43,
+        "mb": 10.03
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "08400b94",
+    "title": "hi",
+    "text": "Podcast \u00b7 0 lines",
+    "voice": "multi",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_podcast_20260907_195933_08400b94.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_podcast_20260907_195933_08400b94.mp3",
+    "createdAt": "2026-09-07T14:59:33.481992+00:00",
+    "kind": "podcast",
+    "chars": 0
+  },
+  {
+    "id": "08400b94",
+    "title": "hi",
+    "text": "hi",
+    "voice": "en-AU-NatashaNeural",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_20260907_195932_08400b94.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_20260907_195932_08400b94.mp3",
+    "createdAt": "2026-09-07T14:59:32.829785+00:00",
+    "chars": 2
+  },
+  {
+    "id": "484cb80b",
+    "text": "Silence cleaned \u00b7 shiftvoice_20260907_194552_8bf5df01.mp3",
+    "voice": "shiftvoice",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_nosilence_20260907_194609.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_nosilence_20260907_194609.mp3",
+    "createdAt": "2026-09-07T14:46:09.027861+00:00",
+    "kind": "silence"
+  },
+  {
+    "id": "8bf5df01",
+    "text": "Podcast \u00b7 0 lines",
+    "voice": "multi",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_podcast_20260907_194552_8bf5df01.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_podcast_20260907_194552_8bf5df01.mp3",
+    "createdAt": "2026-09-07T14:45:53.108913+00:00"
+  },
+  {
+    "id": "8bf5df01",
+    "text": "YouTube in-app login + cross-platform soft fails\n\nDefault choice\n\nIn-app YouTube Sign in (as you asked) + automatic Chrome/Edge cookies fallback if no saved log",
+    "voice": "en-AU-NatashaNeural",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_20260907_194552_8bf5df01.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_20260907_194552_8bf5df01.mp3",
+    "createdAt": "2026-09-07T14:45:52.526374+00:00",
+    "chars": 175
+  },
+  {
+    "id": "d4575be5",
+    "text": "Silence cleaned \u00b7 shiftvoice_20260907_184446_49c69921.mp3",
+    "voice": "shiftvoice",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_nosilence_20260907_194523.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_nosilence_20260907_194523.mp3",
+    "createdAt": "2026-09-07T14:45:23.742450+00:00",
+    "kind": "silence"
+  },
+  {
+    "id": "263b9e6e",
+    "text": "Podcast \u00b7 0 lines",
+    "voice": "multi",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_podcast_20260907_194449_263b9e6e.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_podcast_20260907_194449_263b9e6e.mp3",
+    "createdAt": "2026-09-07T14:44:49.586057+00:00"
+  },
+  {
+    "id": "263b9e6e",
+    "text": "hi",
+    "voice": "en-AU-NatashaNeural",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_20260907_194448_263b9e6e.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_20260907_194448_263b9e6e.mp3",
+    "createdAt": "2026-09-07T14:44:48.955924+00:00",
+    "chars": 2
+  },
+  {
+    "id": "44572581",
+    "text": "hi",
+    "voice": "da-DK-JeppeNeural",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_20260907_184448_44572581.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_20260907_184448_44572581.mp3",
+    "createdAt": "2026-09-07T13:44:48.186079+00:00",
+    "chars": 2
+  },
+  {
+    "id": "49c69921",
+    "text": "hi",
+    "voice": "da-DK-JeppeNeural",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_20260907_184446_49c69921.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_20260907_184446_49c69921.mp3",
+    "createdAt": "2026-09-07T13:44:46.665219+00:00",
+    "chars": 2
+  },
+  {
+    "id": "7b086392",
+    "text": "Podcast \u00b7 2 lines",
+    "voice": "multi",
+    "path": "C:\\Users\\musta\\Documents\\ShiftVoice\\shiftvoice_podcast_20260907_175533_7b086392.mp3",
+    "url": "file:///C:/Users/musta/Documents/ShiftVoice/shiftvoice_podcast_20260907_175533_7b086392.mp3",
+    "createdAt": "2026-09-07T12:55:33.943690+00:00"
+  }
+]

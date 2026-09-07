@@ -1,13 +1,14 @@
-# Omnizamil (private backup)
+﻿# Omnizamil (private backup)
 
 Private source backup for **ShiftZero / OmniGrab** products.
 
-## What’s in this repo
+## What's in this repo
 
 | Path | Contents |
 |------|----------|
 | `omnizamil/` | Admin panel, website, Supabase schemas / scripts |
 | `ShiftGrab/` | ShiftGrab desktop app source (Electron) |
+| `ShiftVoice/` | Shift Voice (from D:\zextts\shiftvoice) |
 
 Public download hubs stay separate (`omniai01/shiftgrab` releases, website hosting). This repo is **source backup only**.
 
@@ -18,4 +19,4 @@ Public download hubs stay separate (`omniai01/shiftgrab` releases, website hosti
 
 ## Backup habit
 
-After a feature batch is finished and tested, say **“backup push”** (or push from this clone) so `main` stays the latest working source.
+After a feature batch is finished and tested, say **"backup push"** (or push from this clone) so `main` stays the latest working source.

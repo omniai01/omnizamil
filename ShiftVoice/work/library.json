@@ -1,0 +1,14 @@
+{
+  "favorites": [
+    "af-ZA-AdriNeural"
+  ],
+  "pairs": [
+    {
+      "id": "42b8ce4b",
+      "name": "o1",
+      "host": "am-ET-MekdesNeural",
+      "guest": "ar-BH-AliNeural",
+      "createdAt": "2026-09-07T12:21:59.691503+00:00"
+    }
+  ]
+}
